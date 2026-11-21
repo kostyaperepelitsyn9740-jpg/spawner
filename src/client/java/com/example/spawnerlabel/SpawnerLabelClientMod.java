@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -25,6 +24,7 @@ import org.joml.Matrix4f;
 public class SpawnerLabelClientMod implements ClientModInitializer {
 
     private static final double MAX_DISTANCE_SQ = 48.0 * 48.0;
+    private static final int FULL_BRIGHT_LIGHT = 15728880;
 
     @Override
     public void onInitializeClient() {
@@ -48,8 +48,8 @@ public class SpawnerLabelClientMod implements ClientModInitializer {
         ChunkPos playerChunk = player.chunkPosition();
         int chunkRadius = Math.min(client.options.renderDistance().get(), 6);
 
-        for (int cx = playerChunk.x - chunkRadius; cx <= playerChunk.x + chunkRadius; cx++) {
-            for (int cz = playerChunk.z - chunkRadius; cz <= playerChunk.z + chunkRadius; cz++) {
+        for (int cx = playerChunk.x() - chunkRadius; cx <= playerChunk.x() + chunkRadius; cx++) {
+            for (int cz = playerChunk.z() - chunkRadius; cz <= playerChunk.z() + chunkRadius; cz++) {
                 LevelChunk chunk = level.getChunkSource().getChunk(cx, cz, false);
                 if (chunk == null) {
                     continue;
@@ -117,7 +117,7 @@ public class SpawnerLabelClientMod implements ClientModInitializer {
                 bufferSource,
                 Font.DisplayMode.SEE_THROUGH,
                 bgColor,
-                LightTexture.FULL_BRIGHT
+                FULL_BRIGHT_LIGHT
         );
 
         poseStack.popPose();
